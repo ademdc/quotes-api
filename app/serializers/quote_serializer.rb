@@ -1,3 +1,3 @@
 class QuoteSerializer < ActiveModel::Serializer
-  attributes :category, :text, :author
+  attributes :id, :category, :text, :author, :image_url
 end

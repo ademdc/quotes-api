@@ -27,6 +27,11 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'active_model_serializers'
 gem 'rack-cors'
 gem 'awesome_print'
+gem 'data_migrate'
+gem 'devise'
+gem 'devise-jwt', '~> 0.5.8'
+gem 'dotenv-rails'
+gem 'dry-configurable', '0.9.0'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
