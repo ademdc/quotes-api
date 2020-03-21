@@ -29,7 +29,7 @@ module Authorization
       if decoded_hash && !decoded_hash.empty?
           puts decoded_hash.class
           user_id = decoded_hash[0]['user_id']
-          @user = User.find_by(id: user_id)
+          @current_user = User.find_by(id: user_id)
       else
           nil
       end

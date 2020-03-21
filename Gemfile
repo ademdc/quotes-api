@@ -32,6 +32,8 @@ gem 'devise'
 gem 'devise-jwt', '~> 0.5.8'
 gem 'dotenv-rails'
 gem 'dry-configurable', '0.9.0'
+gem 'exponent-server-sdk'
+gem 'whenever'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
