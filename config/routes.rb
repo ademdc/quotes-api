@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     get :favorites, on: :collection
     post :set_favorite, on: :collection
     get :random, on: :collection
+    get :daily, on: :collection
   end
 
   resources :users, only: [:index] do

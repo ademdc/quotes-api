@@ -1,5 +1,5 @@
 class QuotesController < ApplicationController
-  skip_before_action :require_login, only: [:index, :show, :random]
+  skip_before_action :require_login, only: [:index, :show, :random, :daily]
   before_action :set_quote, only: [:show]
 
   def index
@@ -32,6 +32,10 @@ class QuotesController < ApplicationController
 
   def random
     render json: Quote.all.sample
+  end
+
+  def daily
+    render json: Quote.daily
   end
 
   protected
