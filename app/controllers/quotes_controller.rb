@@ -1,9 +1,13 @@
 class QuotesController < ApplicationController
-  skip_before_action :require_login, only: [:index, :show, :random, :daily]
+  skip_before_action :require_login, only: [:show, :random, :daily]
   before_action :set_quote, only: [:show]
 
   def index
-    render json: Quote.all
+    unless @current_user.is_admin
+      render json: { error: 'Unauthorized access.' }, status: :not_acceptable
+    else
+      render json: Quote.all
+    end
   end
 
   def show
@@ -11,7 +15,14 @@ class QuotesController < ApplicationController
   end
 
   def create
-    @quote = Quote.create(quote_params)
+    return unless @current_user.is_admin
+    @quote = Quote.new(quote_params)
+
+    if @quote.save
+      render json: { quote: @quote, success: "Successfully added new quote" }
+    else
+      render json: { errors: @quote.errors.full_messages }, status: :not_acceptable
+    end
   end
 
   def favorites
@@ -20,6 +31,8 @@ class QuotesController < ApplicationController
   end
 
   def set_favorite
+    return if FavoriteQuote.where(user_id: @current_user.id, quote_id: params[:quote_id]).present?
+
     favorite_quote = FavoriteQuote.new(user_id: @current_user.id, quote_id: params[:quote_id])
 
     if favorite_quote.save
@@ -45,6 +58,6 @@ class QuotesController < ApplicationController
     end
 
     def quote_params
-      params.permit(:text, :author, :category)
+      params.permit(:text, :author, :category, :image_url)
     end
 end
