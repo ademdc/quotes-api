@@ -28,6 +28,7 @@ class QuotesController < ApplicationController
 
   def favorites
     ids = FavoriteQuote.by_user(@current_user).map(&:quote_id).uniq
+
     render json: Quote.find(ids)
   end
 
@@ -56,8 +57,10 @@ class QuotesController < ApplicationController
     @quote = Quote.find(params[:id])
     return unless @quote.present?
 
-    if @quote.set_daily!
-      render json: { quote: @quote, success: "Successfully set as daily quote." }
+    days_from_now = params[:days_from_now] || 0
+
+    if @quote.set_daily!(days_from_now)
+      render json: { quote: @quote, success: "Successfully set as a daily quote." }
     else
       render json: { errors: @quote.errors.full_messages }, status: :not_acceptable
     end

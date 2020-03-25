@@ -45,12 +45,14 @@ class Quote < ApplicationRecord
   end
 
   def self.of_day
-    Quote.where(is_daily: true).first
+    Quote.where(is_daily: true, daily_for_date: Date.today.to_date).first
   end
 
-  def set_daily!
-    Quote.where(is_daily: true).update_all(is_daily: false)
-    self.update(daily_for_date: Date.today.to_date, is_daily: true)
+  def set_daily!(days_from_now = 0)
+    for_date = (Date.today + days_from_now).to_date
+    Quote.where(is_daily: true).update_all(is_daily: false) if days_from_now == 0
+
+    self.update(daily_for_date: for_date, is_daily: true)
   end
 
   def is_todays_daily_quote?
