@@ -1,5 +1,5 @@
 class QuotesController < ApplicationController
-  skip_before_action :require_login, only: [:show, :random, :daily]
+  skip_before_action :require_login, only: [:random, :daily]
   before_action :set_quote, only: [:show]
 
   def index
@@ -16,6 +16,7 @@ class QuotesController < ApplicationController
 
   def create
     return unless @current_user.is_admin
+
     @quote = Quote.new(quote_params)
 
     if @quote.save
@@ -51,6 +52,38 @@ class QuotesController < ApplicationController
     render json: Quote.daily
   end
 
+  def set_daily
+    @quote = Quote.find(params[:id])
+    return unless @quote.present?
+
+    if @quote.set_daily!
+      render json: { quote: @quote, success: "Successfully set as daily quote." }
+    else
+      render json: { errors: @quote.errors.full_messages }, status: :not_acceptable
+    end
+  end
+
+  def update
+    @quote = Quote.find(params[:id])
+    return unless @quote.present?
+
+    if @quote.update(quote_params)
+      render json: { quote: @quote, success: "Successfully edited quote." }
+    else
+      render json: { errors: @quote.errors.full_messages }, status: :not_acceptable
+    end
+  end
+
+  def destroy
+    @quote = Quote.find(params[:id])
+
+    if @quote.destroy
+      render json: { quote: @quote, success: "Successfully deleted quote." }
+    else
+      render json: { errors: @quote.errors.full_messages }, status: :not_acceptable
+    end
+  end
+
   protected
 
     def set_quote
@@ -58,6 +91,6 @@ class QuotesController < ApplicationController
     end
 
     def quote_params
-      params.permit(:text, :author, :category, :image_url)
+      params.require(:quote).permit(:id, :text, :author, :category, :image_url)
     end
 end
