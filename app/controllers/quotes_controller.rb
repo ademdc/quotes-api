@@ -6,7 +6,7 @@ class QuotesController < ApplicationController
     unless @current_user.is_admin
       render json: { error: 'Unauthorized access.' }, status: :not_acceptable
     else
-      render json: Quote.all
+      render json: Quote.all.order('updated_at DESC')
     end
   end
 
