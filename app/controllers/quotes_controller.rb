@@ -27,7 +27,7 @@ class QuotesController < ApplicationController
   end
 
   def favorites
-    ids = FavoriteQuote.by_user(@current_user).map(&:quote_id).uniq
+    ids = FavoriteQuote.by_user(@current_user).map(&:quote_id).uniq.reverse
 
     render json: Quote.find(ids)
   end
