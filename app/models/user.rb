@@ -8,6 +8,8 @@ class User < ApplicationRecord
   validates :email, presence: true
   validates :email, uniqueness: true
 
+  has_many :view_counters
+
   def set_push_token(token)
     self.push_token = token
   end
@@ -19,5 +21,9 @@ class User < ApplicationRecord
   def increment_view_counter!
     counter = ViewCounter.today_for(self)
     counter.increment_count!
+  end
+
+  def favorite_quotes
+    FavoriteQuote.by_user(self)
   end
 end

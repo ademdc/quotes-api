@@ -20,6 +20,10 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:index] do
-    post :set_push_token, on: :collection
+    collection do
+      post :set_push_token
+      get :favorite_quotes
+      get :view_counters
+    end
   end
 end
