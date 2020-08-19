@@ -1,6 +1,7 @@
 class QuotesController < ApplicationController
   skip_before_action :require_login, only: [:random, :daily]
   before_action :set_quote, only: [:show]
+  before_action :increment_viewed, only: [:daily]
 
   def index
     unless @current_user.is_admin
@@ -95,5 +96,9 @@ class QuotesController < ApplicationController
 
     def quote_params
       params.require(:quote).permit(:id, :text, :author, :category, :image_url)
+    end
+
+    def increment_viewed
+      current_user.increment_view_counter!
     end
 end
