@@ -1,5 +1,5 @@
 class QuotesController < ApplicationController
-  skip_before_action :require_login, only: [:random, :daily]
+  skip_before_action :require_login, only: [:random]
   before_action :set_quote, only: [:show]
   before_action :increment_viewed, only: [:daily]
 
