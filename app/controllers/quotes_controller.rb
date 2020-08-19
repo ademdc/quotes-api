@@ -99,6 +99,6 @@ class QuotesController < ApplicationController
     end
 
     def increment_viewed
-      @current_user.increment_view_counter!
+      @current_user.increment_view_counter! if @current_user
     end
 end
