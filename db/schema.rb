@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_19_135213) do
+ActiveRecord::Schema.define(version: 2020_08_21_115208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "feelings", force: :cascade do |t|
+    t.string "name"
+    t.string "image"
+    t.string "color"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "jwt_blacklists", force: :cascade do |t|
     t.string "jti"
@@ -38,6 +46,16 @@ ActiveRecord::Schema.define(version: 2020_08_19_135213) do
   create_table "quotes_users", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "quote_id", null: false
+  end
+
+  create_table "user_feelings", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "feeling_id"
+    t.string "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feeling_id"], name: "index_user_feelings_on_feeling_id"
+    t.index ["user_id"], name: "index_user_feelings_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

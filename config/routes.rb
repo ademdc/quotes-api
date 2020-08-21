@@ -26,4 +26,12 @@ Rails.application.routes.draw do
       get :view_counters
     end
   end
+
+  resources :feelings, only: [:index] do
+    collection do
+      post :create_user_feeling
+      get  :latest_feeling
+      get  :user_feeling
+    end
+  end
 end

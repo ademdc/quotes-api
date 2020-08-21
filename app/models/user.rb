@@ -9,6 +9,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
 
   has_many :view_counters
+  has_many :user_feelings
 
   def set_push_token(token)
     self.push_token = token
