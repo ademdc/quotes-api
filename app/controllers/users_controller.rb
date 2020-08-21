@@ -24,6 +24,10 @@ class UsersController < ApplicationController
     render json: { user: @user, userId: @user.id, view_counters: @user.view_counters }
   end
 
+  def get_partner
+    render json: @current_user.companion
+  end
+
   private
 
   def get_user

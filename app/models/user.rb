@@ -10,9 +10,14 @@ class User < ApplicationRecord
 
   has_many :view_counters
   has_many :user_feelings
+  has_one  :partner
 
   def set_push_token(token)
     self.push_token = token
+  end
+
+  def companion
+    User.find(self.partner.partner_id) rescue nil
   end
 
   def todays_view_counter
@@ -26,5 +31,13 @@ class User < ApplicationRecord
 
   def favorite_quotes
     FavoriteQuote.by_user(self)
+  end
+
+  def partner_up_with!(user)
+    Partner.where(user_id: self.id, partner_id: user.id, active: true).first_or_create!
+  end
+
+  def deactivate_other_partners
+    Partner.where(user_id: self.id).update(active: false)
   end
 end

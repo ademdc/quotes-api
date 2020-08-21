@@ -10,10 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_21_115208) do
+ActiveRecord::Schema.define(version: 2020_08_21_131043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "data_migrations", id: false, force: :cascade do |t|
+    t.string "version", null: false
+    t.index ["version"], name: "unique_data_migrations", unique: true
+  end
 
   create_table "feelings", force: :cascade do |t|
     t.string "name"
@@ -29,6 +34,15 @@ ActiveRecord::Schema.define(version: 2020_08_21_115208) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["jti"], name: "index_jwt_blacklists_on_jti"
+  end
+
+  create_table "partners", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "partner_id"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_partners_on_user_id"
   end
 
   create_table "quotes", force: :cascade do |t|
@@ -68,6 +82,8 @@ ActiveRecord::Schema.define(version: 2020_08_21_115208) do
     t.datetime "updated_at", null: false
     t.string "push_token"
     t.boolean "is_admin", default: false
+    t.string "first_name"
+    t.string "last_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

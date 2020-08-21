@@ -24,6 +24,7 @@ Rails.application.routes.draw do
       post :set_push_token
       get :favorite_quotes
       get :view_counters
+      get :get_partner
     end
   end
 
