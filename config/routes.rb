@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   resources :feelings, only: [:index] do
     collection do
       post :create_user_feeling
-      get  :latest_feeling
+      get  :latest_feelings
       get  :user_feeling
     end
   end

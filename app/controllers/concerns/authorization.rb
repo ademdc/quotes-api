@@ -6,7 +6,7 @@ module Authorization
   end
 
   def encode_token(payload)
-      JWT.encode(payload, 'my_secret')
+      JWT.encode(payload, ENV['JWT_SECRET'])
   end
 
   def auth_header
@@ -18,7 +18,7 @@ module Authorization
 
         token = auth_header.split(' ')[1]
         begin
-            JWT.decode(token, 'my_secret', true, algorithm: 'HS256')
+            JWT.decode(token, ENV['JWT_SECRET'], true, algorithm: 'HS256')
         rescue JWT::DecodeError
             []
         end
