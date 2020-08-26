@@ -11,7 +11,7 @@ class FeelingsController < ApplicationController
     user_feeling = UserFeeling.create(user_id: @current_user.id, feeling_id: params[:feeling_id])
 
     if user_feeling
-      render json: user_feeling
+      render json: user_feeling.feeling
     else
       render json: { message: 'Error occured' }
     end
