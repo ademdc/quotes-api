@@ -10,7 +10,7 @@ module FeelingHelper
     when :year
       Date.today - 365.days
     else
-      Date.today-30.days
+      Date.today-7.days
     end
   end
 end
