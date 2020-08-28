@@ -4,30 +4,29 @@ class FeelingsController < ApplicationController
   before_action :set_user, only: :latest_feelings
 
   def index
-    render json: Feeling.all
+    render json: Feeling.all.order(:id)
   end
 
   def create_user_feeling
     user_feeling = UserFeeling.create(user_id: @current_user.id, feeling_id: params[:feeling_id])
 
     if user_feeling
-      render json: user_feeling.feeling
+      render json: user_feeling
     else
       render json: { message: 'Error occured' }
     end
   end
 
   def latest_feelings
-    latest_feeling = UserFeeling.for_user(@user.id).last.feeling
-    partner_feeling = UserFeeling.for_user(@user.companion&.id).last.feeling
+    latest_feeling = UserFeeling.for_user(@user.id)&.last
+    partner_feeling = UserFeeling.for_user(@user.companion&.id)&.last
 
     render json: { latest_feeling: latest_feeling, partner_feeling: partner_feeling }
   end
 
   def user_feeling
-    user_feeling = UserFeeling.where(user_id: @current_user.id, feeling_id: params[:feeling_id]).last
-
-    render json: user_feeling
+    user_feelings = UserFeeling.for_user(params[:user_id]).where(feeling_id: params[:feeling_id])
+    render json: user_feelings
   end
 
   private
