@@ -1,7 +1,9 @@
 class FeelingsController < ApplicationController
+  include FeelingHelper
   respond_to :json
 
   before_action :set_user, only: :latest_feelings
+  before_action :get_period, only: [:user_feeling, :for_period]
 
   def index
     render json: Feeling.all.order(:id)
@@ -25,11 +27,30 @@ class FeelingsController < ApplicationController
   end
 
   def user_feeling
-    user_feelings = UserFeeling.for_user(params[:user_id]).where(feeling_id: params[:feeling_id])
+    user_feelings = UserFeeling
+                      .for_user(params[:user_id])
+                      .for_period(@period)
+                      .where(feeling_id: params[:feeling_id])
+
     render json: user_feelings
   end
 
+  def for_period
+    user_feeling = UserFeeling.for_user(params[:user_id]).for_period(@period)
+    feeling_id, count = user_feeling.group(:feeling_id).count.max_by { |k,v| v }
+
+    render json: { feeling: get_feeling(feeling_id), count: count }
+  end
+
   private
+
+  def get_feeling(feeling_id)
+    Feeling.find(feeling_id)
+  end
+
+  def get_period
+    @period = calculate_period params[:period]
+  end
 
   def set_user
     @user = User.find(params[:user_id])

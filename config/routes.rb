@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       post :create_user_feeling
       get  :latest_feelings
       get  :user_feeling
+      get  :for_period
     end
   end
 end
