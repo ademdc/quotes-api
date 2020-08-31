@@ -13,6 +13,7 @@ class FeelingsController < ApplicationController
     user_feeling = UserFeeling.create(user_id: @current_user.id, feeling_id: params[:feeling_id])
 
     if user_feeling
+      User.feeling_update_notification(@current_user.companion)
       render json: user_feeling
     else
       render json: { message: 'Error occured' }
@@ -45,7 +46,7 @@ class FeelingsController < ApplicationController
   private
 
   def get_feeling(feeling_id)
-    Feeling.find(feeling_id)
+    Feeling.find(feeling_id) rescue nil
   end
 
   def get_period

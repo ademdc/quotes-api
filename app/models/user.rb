@@ -20,6 +20,19 @@ class User < ApplicationRecord
     User.find(self.partner.partner_id) rescue nil
   end
 
+  def self.feeling_update_notification(user, sound:'default')
+    return unless user && user.push_token
+
+    client = Exponent::Push::Client.new
+    messages = [{
+      to: user.push_token,
+      sound: sound,
+      body: "#{user.companion&.first_name} has changed his/her current mood. Check it out."
+    }]
+
+    client.publish messages
+  end
+
   def todays_view_counter
     ViewCounter.where(user_id: self.id, created_at: Date.today.to_datetime).take
   end
